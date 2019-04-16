@@ -1,15 +1,15 @@
 <template>
   <div class="recommend">
-    <div>这是推荐</div>
-
+    <banner/>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 
+import banner from "@/components/banner";
 export default {
   name: "recommend",
-  components: {}
+  components: { banner }
 };
 </script>

@@ -1,41 +1,33 @@
 <template>
   <div class="tabList">
-    <a-tabs defaultActiveKey="1" @change="callback">
-      <a-tab-pane key="1">
-        <span slot="tab">
-          <a-icon type="android"/>推荐
-        </span>
-      </a-tab-pane>
-      <a-tab-pane key="2">
-        <span slot="tab">
-          <a-icon type="android"/>歌手
-        </span>
-      </a-tab-pane>
-      <a-tab-pane key="3">
-        <span slot="tab">
-          <a-icon type="android"/>歌单
-        </span>
-      </a-tab-pane>
-    </a-tabs>
+    <a-menu v-model="current" mode="horizontal" @click="goItem">
+      <a-menu-item key="recommend">
+        <a-icon type="mail"/>推荐
+      </a-menu-item>
+      <a-menu-item key="singer">
+        <a-icon type="android"/>歌手
+      </a-menu-item>
+      <a-menu-item key="musicList">
+        <a-icon type="android"/>歌单
+      </a-menu-item>
+    </a-menu>
   </div>
 </template>
 
 <script>
 export default {
   data() {
-    return {
-    };
+    return { current: ["recommend"] };
   },
   methods: {
-    callback(key) {
-      if (key == 1) {
+    goItem(item, key, keyPath) {
+      if (item.key == "recommend") {
         this.$router.push("/recommend");
-      } else if (key == 2) {
+      } else if (item.key == "singer") {
         this.$router.push("/singer");
       } else {
         this.$router.push("/musicList");
       }
-      // console.log(key);
     }
   }
 };
@@ -44,17 +36,9 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .tabList {
-  // background-color: #00b3ff;
-  color: #fff;
-  font-size: 1.4rem;
-  // padding: 1rem 0;
   .item {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    span {
-      margin-left: 0.5rem;
+    .ant-tabs-top-bar {
+      margin: 0 !important;
     }
   }
 }

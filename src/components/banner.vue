@@ -1,17 +1,14 @@
 <template>
   <div class="banner">
-    <a-carousel :afterChange="onChange">
+    <a-carousel :afterChange="onChange" autoplay>
       <div>
-        <h3>1</h3>
+        <img class="picItem" src="../assets/2.jpg">
       </div>
       <div>
-        <h3>2</h3>
+        <img class="picItem" src="../assets/3.jpg">
       </div>
       <div>
-        <h3>3</h3>
-      </div>
-      <div>
-        <h3>4</h3>
+        <img class="picItem" src="../assets/4.jpeg">
       </div>
     </a-carousel>
   </div>
@@ -21,21 +18,21 @@
 export default {
   name: "banner",
   data() {
-    return {
-      current: ["mail"]
-    };
+    return {};
   },
-  methods: {}
+  methods: {
+    onChange() {
+    }
+  }
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .banner {
   .ant-carousel {
     .slick-slide {
       text-align: center;
-      height: 160px;
+      height: 16rem;
       line-height: 160px;
       background: #364d79;
       overflow: hidden;
@@ -44,8 +41,14 @@ export default {
 
   .ant-carousel {
     .slick-slide h3 {
-      color: #fff;
+      // color: #fff;
     }
+  }
+
+  .picItem {
+    width: 100%;
+    height: 20rem;
+    object-fit: cover;
   }
 }
 </style>

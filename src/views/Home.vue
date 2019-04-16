@@ -6,14 +6,28 @@
     <router-view></router-view>
   </div>
 </template>
-
+ 
 <script>
 // @ is an alias to /src
 
 import navBar from "@/components/navBar";
 import tabList from "@/components/tabList";
+
 export default {
   name: "home",
-  components: { tabList, navBar }
+  components: { tabList, navBar },
+  methods: {
+    getMusicData() {
+      this.$axios
+        .get("https://api.itooi.cn/music/netease/hotSongList", {
+          params: {
+            key: 579621905
+          }
+        })
+    }
+  },
+  mounted() {
+    this.getMusicData();
+  }
 };
 </script>
