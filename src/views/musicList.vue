@@ -1,6 +1,6 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
+  <div class="list">
+    <h1>这首歌单</h1>
   </div>
 </template>
 

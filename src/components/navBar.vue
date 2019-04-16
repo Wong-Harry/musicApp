@@ -2,21 +2,28 @@
   <a-row class="navBar">
     <a-col span="20" class="header_input">musicApp</a-col>
     <a-col span="4" class="header_right">
-      <a-icon type="search" class="search_icon"/>
+      <div @click="goSearch">
+        <a-icon type="search" class="search_icon"/>
+      </div>
     </a-col>
   </a-row>
 </template>
 
 <script>
 export default {
-  name: "navBar"
+  name: "navBar",
+  methods: {
+    goSearch() {
+      this.$router.push("/search");
+    }
+  }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .navBar {
-  background-color: #00b3ff;
+  background-color: #158fed;
   color: #fff;
   font-size: 1.8rem;
   font-weight: 500;
@@ -29,8 +36,8 @@ export default {
     justify-content: center;
     align-items: center;
   }
-  .search_icon{
-    font-size: 20px;
+  .search_icon {
+    font-size: 2rem;
   }
 }
 </style>
