@@ -1,12 +1,12 @@
 <template>
   <div class="search">
-    <h1 @click="goBack">This is an search page</h1>
+    <h1 @click="goBack">这是搜索页面</h1>
   </div>
 </template>
 
 <script>
-// import banner from "@components/banner";
 export default {
+  name: 'search',
   methods: {
     goBack () {
       this.$router.go(-1)

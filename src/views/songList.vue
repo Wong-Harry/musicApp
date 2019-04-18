@@ -20,7 +20,7 @@
           <!-- <a-button>播放全部</a-button> -->
           <div class="songListCount">
             <p>播放量：{{songList.playCount}}</p>
-            <p>共{{songList.trackIds.length}}首歌曲</p>
+            <p v-if="songList.trackIds">共{{songList.trackIds.length}}首歌曲</p>
           </div>
         </div>
       </div>
@@ -37,7 +37,7 @@
       <div class="listItem">
         <div v-for="(item, index) in songListData" :key="index" class="item">
           <p class="nums">{{index+1}}</p>
-          <div class="songInfo">
+          <div class="songInfo" @click="playSong(item)">
             <div>
               <p>{{item.name}}</p>
               <span>{{item.ar['0'].name}}</span>
@@ -47,78 +47,136 @@
         </div>
       </div>
     </div>
+
+    <music-Bar/>
   </div>
 </template>
 
 <script>
-// import banner from "@components/banner";
 export default {
-  data() {
+  name:'songList',
+  data () {
     return {
-      songId: this.$route.params.listId,
+      songListId: this.$route.params.listId,//歌单id
+      songIdx: this.$route.params.idx,//排行榜id
       songList: [],
       songListData: [],
-      songListId: "",
-      bgImg: ""
-    };
-  },
-  methods: {
-    goBack() {
-      this.$router.go(-1);
-    },
-    getSongList() {
-      console.log(this.songId);
-      this.$axios
-        .get("http://203.195.175.50:3000/playlist/detail", {
-          params: {
-            id: this.songId
-          }
-        })
-        .then(data => {
-          console.log(data);
-          if (data.status === 200) {
-            this.songList = data.data.playlist;
-            for (
-              let index = 0;
-              index < data.data.playlist.trackIds.length;
-              index++
-            ) {
-              const element = data.data.playlist.trackIds[index];
-              index == data.data.playlist.trackIds.length - 1
-                ? (this.songListId += `${element.id}`)
-                : (this.songListId += `${element.id},`);
-            }
-            this.bgImg = data.data.playlist.coverImgUrl;
-            this.getSongInfo();
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    getSongInfo() {
-      this.$axios
-        .get("http://203.195.175.50:3000/song/detail", {
-          params: {
-            ids: this.songListId
-          }
-        })
-        .then(data => {
-          if (data.status == 200) {
-            this.songListData = data.data.songs;
-            console.log(this.songList);
-            
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      allSongListId: '',
+      bgImg: ''
     }
   },
-  mounted() {
-    this.getSongList();
+  methods: {
+    goBack () {
+      this.$router.go(-1)
+    },
+    // 获取歌曲列表
+    getSongList () {
+      if (this.songListId) {
+        this.$axios
+          .get('http://203.195.175.50:3000/playlist/detail', {
+            params: {
+              id: this.songListId
+            }
+          })
+          .then(data => {
+            console.log(data)
+            if (data.status === 200) {
+              this.songList = data.data.playlist
+              for (
+                let index = 0;
+                index < data.data.playlist.trackIds.length;
+                index++
+              ) {
+                const element = data.data.playlist.trackIds[index]
+                index === data.data.playlist.trackIds.length - 1
+                  ? (this.allSongListId += `${element.id}`)
+                  : (this.allSongListId += `${element.id},`)
+              }
+              this.bgImg = data.data.playlist.coverImgUrl
+              this.getSongInfo()
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      } else if (this.songIdx) {
+        this.$axios
+          .get('http://203.195.175.50:3000/top/list', {
+            params: {
+              idx: this.songIdx
+            }
+          })
+          .then(data => {
+            console.log(data)
+            if (data.status === 200) {
+              this.songList = data.data.playlist
+              for (
+                let index = 0;
+                index < data.data.playlist.trackIds.length;
+                index++
+              ) {
+                const element = data.data.playlist.trackIds[index]
+                index === data.data.playlist.trackIds.length - 1
+                  ? (this.allSongListId += `${element.id}`)
+                  : (this.allSongListId += `${element.id},`)
+              }
+              this.bgImg = data.data.playlist.coverImgUrl
+              this.getSongInfo()
+            }
+          })
+          .catch(err => {
+            console.log(err)
+
+          })
+      }
+    },
+    // 获取歌曲详情
+    getSongInfo () {
+      this.$axios
+        .get('http://203.195.175.50:3000/song/detail', {
+          params: {
+            ids: this.allSongListId
+          }
+        })
+        .then(data => {
+          if (data.status === 200) {
+            this.songListData = data.data.songs
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    // 获取歌曲的url并播放
+    playSong (songData) {
+      console.log(songData);
+      let songInfo = {
+        url: '',
+        name: songData.name,
+        songer: songData.ar['0'].name,
+        picUrl: songData.al.picUrl
+      }
+
+      this.$axios.get('http://203.195.175.50:3000/song/url', {
+        params: {
+          id: songData.id
+        }
+      }).then(data => {
+        if (data.status === 200) {
+          console.log(data);
+          // 存储歌曲的信息
+          songInfo.url = data.data.data['0'].url
+          console.log(songInfo);
+
+        }
+
+      }).catch(err => console.log(err))
+    }
+  },
+  mounted () {
+    this.getSongList()
   }
-};
+}
 </script>
 
 <style lang="scss">
@@ -162,7 +220,7 @@ export default {
           font-weight: 600;
         }
         .introduce {
-          color: #ccc;
+          color: #fff;
           display: flex;
           div {
             font-size: 1.2rem;
@@ -175,7 +233,7 @@ export default {
           }
         }
         .songListCount {
-          color: #ccc;
+          color: #fff;
           font-size: 1.2rem;
         }
       }
@@ -200,7 +258,7 @@ export default {
       color: #fff;
       font-size: 1.6rem;
       div {
-        background-color: #fe3938;
+        background-color: #bd76ff;
         border-radius: 2rem;
         padding: 0.5rem 1.5rem;
         span {

@@ -1,9 +1,10 @@
 <template>
   <div class="home">
-    <navBar/>
-    <tabList/>
+    <nav-Bar/>
+    <tab-List/>
 
     <router-view></router-view>
+    <music-Bar/>
   </div>
 </template>
 
@@ -12,7 +13,6 @@
 
 import navBar from '@/components/navBar'
 import tabList from '@/components/tabList'
-
 export default {
   name: 'home',
   components: { tabList, navBar },

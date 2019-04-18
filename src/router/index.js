@@ -41,6 +41,16 @@ export default new Router({
       path: '/songList/:listId',
       name: 'songList',
       component: () => import('@/views/songList.vue')
+    },
+    {
+      path: '/topList/songList/:idx',
+      name: 'topListSongList',
+      component: () => import('@/views/songList.vue')
+    },
+    {
+      path: '/player',
+      name: 'player',
+      component: () => import('@/views/player.vue')
     }
   ]
 })

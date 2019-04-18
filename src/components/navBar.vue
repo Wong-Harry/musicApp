@@ -23,7 +23,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .navBar {
-  background-color: #158fed;
+  background-color: #bd76ff;
   color: #fff;
   font-size: 1.8rem;
   font-weight: 500;

@@ -10,32 +10,31 @@
 
 <script>
 export default {
-  name: "banner",
-  data() {
+  name: 'banner',
+  data () {
     return {
       banners: []
-    };
+    }
   },
   methods: {
-    onChange() {},
-    getBanner() {
+    onChange () { },
+    getBanner () {
       this.$axios
-        .get("http://203.195.175.50:3000/banner")
+        .get('http://203.195.175.50:3000/banner')
         .then(data => {
           if (data.status === 200) {
-            console.log(data);
-            this.banners = data.data.banners;
+            this.banners = data.data.banners
           }
         })
         .catch(err => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     }
   },
-  mounted() {
-    this.getBanner();
+  mounted () {
+    this.getBanner()
   }
-};
+}
 </script>
 
 <style scoped lang="scss">

@@ -25,7 +25,7 @@ export default {
         this.$router.push('/recommend')
       } else if (item.key === 'singer') {
         this.$router.push('/topList')
-        } else {
+      } else {
         this.$router.push('/singer')
       }
     }
@@ -36,6 +36,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .tabList {
+  text-align: center;
   .item {
     .ant-tabs-top-bar {
       margin: 0 !important;

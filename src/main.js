@@ -7,11 +7,14 @@ import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
 import './assets/reset.css'
 import axios from 'axios'
+import musicBar from '@/components/musicBar'
 Vue.use(Antd)
 
-Vue.prototype.$axios = axios
 Vue.config.productionTip = false
-
+// 全局添加axios请求模块
+Vue.prototype.$axios = axios
+// 全局添加播放器组件
+Vue.component('musicBar', musicBar)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

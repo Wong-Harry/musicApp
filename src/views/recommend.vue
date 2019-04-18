@@ -24,49 +24,46 @@
 <script>
 // @ is an alias to /src
 
-import banner from "@/components/banner";
+import banner from '@/components/banner'
 export default {
-  name: "recommend",
+  name: 'recommend',
   components: { banner },
-  data() {
+  data () {
     return {
       allMusicListData: [],
       showMusicListData: []
-    };
+    }
   },
   methods: {
-    getMusicData() {
+    getMusicData () {
       this.$axios
-        .get("http://203.195.175.50:3000/personalized")
+        .get('http://203.195.175.50:3000/personalized')
         .then(response => {
-          console.log(response);
           if (response.status === 200) {
-            this.allMusicListData = response.data.result;
-            this.addMusicList();
+            this.allMusicListData = response.data.result
+            this.addMusicList()
           }
         })
         .catch(error => {
-          console.log(error);
-        });
+          console.log(error)
+        })
     },
 
-    addMusicList() {
+    addMusicList () {
       for (let index = 0; index < 21; index++) {
-        const element = this.allMusicListData[index];
-        this.showMusicListData.push(element);
+        const element = this.allMusicListData[index]
+        this.showMusicListData.push(element)
       }
-      console.log(this.showMusicListData);
     },
 
-    openSongList(songId) {
-      console.log(songId);
-      this.$router.push({ name: "songList", params: { listId: songId } });
+    openSongList (songId) {
+      this.$router.push({ name: 'songList', params: { listId: songId } })
     }
   },
-  mounted() {
-    this.getMusicData();
+  mounted () {
+    this.getMusicData()
   }
-};
+}
 </script>
 
 <style lang="scss">
