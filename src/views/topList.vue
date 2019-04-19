@@ -41,7 +41,7 @@
 
 <script>
 export default {
-  name:'topList',
+  name: 'topList',
   data () {
     return {
       hotListData: []

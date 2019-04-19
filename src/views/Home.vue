@@ -22,3 +22,10 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.home {
+  padding: 0 0 5rem 0;
+}
+</style>
+

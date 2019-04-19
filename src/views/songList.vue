@@ -35,9 +35,14 @@
         </div>
       </div>
       <div class="listItem">
-        <div v-for="(item, index) in songListData" :key="index" class="item">
+        <div
+          v-for="(item, index) in songListData"
+          :key="index"
+          class="item"
+          @click="playSong(item)"
+        >
           <p class="nums">{{index+1}}</p>
-          <div class="songInfo" @click="playSong(item)">
+          <div class="songInfo">
             <div>
               <p>{{item.name}}</p>
               <span>{{item.ar['0'].name}}</span>
@@ -54,11 +59,13 @@
 
 <script>
 export default {
-  name:'songList',
+  name: 'songList',
   data () {
     return {
-      songListId: this.$route.params.listId,//歌单id
-      songIdx: this.$route.params.idx,//排行榜id
+      //歌单id
+      songListId: this.$route.params.listId,
+      //排行榜id
+      songIdx: this.$route.params.idx,
       songList: [],
       songListData: [],
       allSongListId: '',
@@ -66,6 +73,7 @@ export default {
     }
   },
   methods: {
+    // 返回
     goBack () {
       this.$router.go(-1)
     },
@@ -126,7 +134,6 @@ export default {
           })
           .catch(err => {
             console.log(err)
-
           })
       }
     },
@@ -149,12 +156,14 @@ export default {
     },
     // 获取歌曲的url并播放
     playSong (songData) {
-      console.log(songData);
+      console.log(songData)
       let songInfo = {
-        url: '',
+        id: songData.id,
         name: songData.name,
+        picUrl: songData.al.picUrl,
         songer: songData.ar['0'].name,
-        picUrl: songData.al.picUrl
+        spareUrl: '',
+        url: ''
       }
 
       this.$axios.get('http://203.195.175.50:3000/song/url', {
@@ -163,13 +172,12 @@ export default {
         }
       }).then(data => {
         if (data.status === 200) {
-          console.log(data);
           // 存储歌曲的信息
-          songInfo.url = data.data.data['0'].url
-          console.log(songInfo);
-
+          songInfo.spareUrl = data.data.data['0'].url
+          songInfo.url = `https://music.163.com/song/media/outer/url?id=${songInfo.id}.mp3`
+          console.log(songInfo)
+          this.$eventBus.$emit('addSong', songInfo)
         }
-
       }).catch(err => console.log(err))
     }
   },
@@ -181,6 +189,7 @@ export default {
 
 <style lang="scss">
 .songList {
+  padding: 0 0 5rem 0;
   .header {
     padding: 0.5rem 0 2.5rem;
     overflow: hidden;

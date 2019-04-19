@@ -25,14 +25,12 @@ export default {
       this.$router.push('/player')
     },
     playMusci (e) {
-      console.log(e);
-      e.stopPropagation();
-
+      console.log(e)
+      e.stopPropagation()
     },
     openList (e) {
-      e.stopPropagation();
-      console.log(e);
-
+      e.stopPropagation()
+      console.log(e)
     }
   }
 }
@@ -73,7 +71,7 @@ export default {
     padding: 0 1rem;
     display: flex;
     align-items: center;
-      height: 100%;
+    height: 100%;
     font-size: 2.2rem;
     i {
       height: 100%;

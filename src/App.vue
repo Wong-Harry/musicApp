@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <music-Player/>
+    <router-view/>
   </div>
 </template>
 
@@ -10,10 +11,8 @@ export default {
   components: {},
   methods: {
   },
-  data () {
-    return {}
-  },
-  watch: {
+  mounted () {
+    
   },
 }
 </script>
