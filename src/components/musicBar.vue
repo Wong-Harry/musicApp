@@ -1,14 +1,15 @@
 <template>
   <div class="musicBar" @click="openPlayer">
     <div class="imgBox">
-      <img src="https://p1.music.126.net/DrRIg6CrgDfVLEph9SNh7w==/18696095720518497.jpg">
+      <img :src="picUrl">
       <div>
-        <p>绿色</p>
-        <span>陈雪凝</span>
+        <p>{{songName}}</p>
+        <span>{{songer}}</span>
       </div>
     </div>
     <div class="btns">
-      <a-icon type="play-circle" @click="playMusci"/>
+      <a-icon type="pause-circle" v-if="isplay=='play'" @click="playMusci($event,'pause')"/>
+      <a-icon type="play-circle" v-if="isplay=='pause'" @click="playMusci($event,'play')"/>
       <a-icon type="menu-unfold" @click="openList"/>
     </div>
   </div>
@@ -18,20 +19,43 @@
 export default {
   name: 'musicBar',
   data () {
-    return {}
+    return {
+      picUrl: '',
+      songName: '',
+      songer: '',
+      isplay: ''
+    }
   },
   methods: {
     openPlayer () {
       this.$router.push('/player')
     },
-    playMusci (e) {
-      console.log(e)
+    playMusci (e, state) {
+      this.$eventBus.$emit('isplay', state)
+      state == 'play' ? this.isplay = 'play' : this.isplay = 'pause'
       e.stopPropagation()
     },
     openList (e) {
       e.stopPropagation()
       console.log(e)
     }
+  },
+  beforeMount () {
+    console.log(44455)
+    this.$eventBus.$emit('getSongList', 'musicBar')
+    this.$eventBus.$on('listenSongData', (data) => {
+      data.isplay ? this.isplay = 'pause' : this.isplay = 'play'
+      this.picUrl = data.picUrl
+      this.songName = data.name
+      this.songer = data.songer
+    })
+  },
+  mounted () {
+
+  },
+  beforeDestroy () {
+    // console.log(9999);
+    // this.$eventBus.$off('getSongList')
   }
 }
 </script>
@@ -50,7 +74,6 @@ export default {
   border-top: 0.1rem solid #f0f0f0;
   .imgBox {
     padding: 0 1rem;
-    width: 12rem;
     display: flex;
     align-items: center;
     img {

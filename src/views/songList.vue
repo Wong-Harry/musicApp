@@ -87,7 +87,6 @@ export default {
             }
           })
           .then(data => {
-            console.log(data)
             if (data.status === 200) {
               this.songList = data.data.playlist
               for (
@@ -115,7 +114,6 @@ export default {
             }
           })
           .then(data => {
-            console.log(data)
             if (data.status === 200) {
               this.songList = data.data.playlist
               for (
@@ -156,7 +154,6 @@ export default {
     },
     // 获取歌曲的url并播放
     playSong (songData) {
-      console.log(songData)
       let songInfo = {
         id: songData.id,
         name: songData.name,
@@ -165,7 +162,6 @@ export default {
         spareUrl: '',
         url: ''
       }
-
       this.$axios.get('http://203.195.175.50:3000/song/url', {
         params: {
           id: songData.id
@@ -175,7 +171,6 @@ export default {
           // 存储歌曲的信息
           songInfo.spareUrl = data.data.data['0'].url
           songInfo.url = `https://music.163.com/song/media/outer/url?id=${songInfo.id}.mp3`
-          console.log(songInfo)
           this.$eventBus.$emit('addSong', songInfo)
         }
       }).catch(err => console.log(err))

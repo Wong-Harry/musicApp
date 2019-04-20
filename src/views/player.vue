@@ -16,25 +16,24 @@
     <div class="btns">
       <span class="playPrpgress">
         <span class="startTime">{{currentTime}}</span>
-        <div class="prpgress">
+        <div class="prpgress" @click="fastSeek1($event)">
           <div class="whitePrpgress" :style="{width:prpgress+'%'}"></div>
           <div
             class="btn"
             :style="{left:prpgress+'%'}"
             @touchstart="fastSeek($event)"
             @touchmove="fastSeek($event)"
-            @touchend="fastSeek($event)"
           ></div>
         </div>
         <span class="endTime">{{data.endTime}}</span>
       </span>
       <div class="playBtns">
-        <a-icon type="retweet"/>
-        <!-- <a-icon type="swap"/> -->
-        <a-icon type="step-backward"/>
+        <a-icon type="retweet" v-if="playModel=='loop'" @click="switchPlayModel('random')"/>
+        <a-icon type="swap" v-if="playModel=='random'" @click="switchPlayModel('loop')"/>
+        <a-icon type="step-backward" @click="pre()"/>
         <a-icon type="pause-circle" v-if="iconIsplay=='play'" @click="isplay('pause')"/>
         <a-icon type="play-circle" v-if="iconIsplay=='pause'" @click="isplay('play')"/>
-        <a-icon type="step-forward"/>
+        <a-icon type="step-forward" @click="next()"/>
         <a-icon type="menu-unfold"/>
       </div>
     </div>
@@ -63,10 +62,13 @@ export default {
       iconIsplay: 'play',
       // 
       currentTime: '00:00',
-      prpgress: '0'
+      prpgress: '0',
+      screenWidth: document.body.clientWidth,
+      playModel: 'loop'
     }
   },
   methods: {
+    // 返回
     goBack () {
       this.$router.go(-1)
     },
@@ -75,10 +77,49 @@ export default {
       this.$eventBus.$emit('isplay', state)
       state == 'play' ? this.iconIsplay = 'play' : this.iconIsplay = 'pause'
     },
-    // 拖动
+    // 拖动按钮
     fastSeek (e) {
-      console.log(e);
-
+      // 拖动的距离
+      let endWidth = e.targetTouches['0'].pageX;
+      // 总共可以拖动的距离
+      let touchWidth = ((this.screenWidth * 0.86) * 0.60)
+      // 进度条最左端的距离
+      let startWidth = (this.screenWidth - touchWidth) / 2
+      // 算出来的百分比
+      let n = (endWidth - startWidth) / touchWidth
+      if (n < 0) n = 0
+      if (n > 1) n = 1
+      this.prpgress = n * 100
+      let time = n * this.data.returnTime
+      console.log(time);
+      this.$eventBus.$emit('fastSeek', time)
+    },
+    // 拖动条
+    fastSeek1 (e) {
+      let endWidth = e.pageX;
+      // 总共可以拖动的距离
+      let touchWidth = ((this.screenWidth * 0.86) * 0.60)
+      // 进度条最左端的距离
+      let startWidth = (this.screenWidth - touchWidth) / 2
+      // 算出来的百分比
+      let n = (endWidth - startWidth) / touchWidth
+      this.prpgress = n * 100
+      let time = n * this.data.returnTime
+      console.log(time);
+      this.$eventBus.$emit('fastSeek', time)
+    },
+    // 切换播放模式
+    switchPlayModel (model) {
+      console.log(model);
+      model == 'loop' ? this.playModel = 'random' : this.playModel = 'loop'
+    },
+    // 上一首
+    pre () {
+      this.$eventBus.$emit('pre', 'pre')
+    },
+    // 下一首
+    next () {
+      this.$eventBus.$emit('next', 'next')
     }
   },
   beforeMount () {
@@ -86,7 +127,10 @@ export default {
     this.$eventBus.$emit('getMusicState', 'open')
     // 接收当前播放歌曲的信息
     this.$eventBus.$on('playInfo', (data) => {
+      console.log(111);
+      
       this.data = data
+      data.isplay ? this.iconIsplay = 'pause' : this.iconIsplay = 'play'
     })
     // 接收当前播放歌曲的已播放的时间
     this.$eventBus.$on('currentTime', (data) => {
@@ -151,11 +195,8 @@ export default {
       .info {
         display: block;
         margin-left: 2rem;
-        font-size: 1.6rem;
-        p {
-          margin-bottom: 0.5rem;
-          line-height: auto;
-        }
+        font-size: 1.8rem;
+        line-height: 1.15;
         span {
           font-size: 1.4rem;
         }
