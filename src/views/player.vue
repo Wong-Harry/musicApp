@@ -122,7 +122,7 @@ export default {
       this.$eventBus.$emit('next', 'next')
     }
   },
-  beforeMount () {
+  beforeCreate () {
     // 页面加载前发送事件获取当前歌曲信息
     this.$eventBus.$emit('getMusicState', 'open')
     // 接收当前播放歌曲的信息
@@ -162,7 +162,8 @@ export default {
   .bgImg {
     position: absolute;
     z-index: -1;
-    top: 0;
+    top: 20%;
+    float: left;
     filter: blur(5rem);
     .blackBg {
       position: absolute;
@@ -175,7 +176,7 @@ export default {
       margin-top: 50%;
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      // object-fit: cover;
     }
   }
   .navBar {
@@ -186,8 +187,8 @@ export default {
     display: flex;
     width: 100%;
     align-items: center;
-    // position: fixed;
-    // top: 0;
+    position: fixed;
+    top: 0;
     font-size: 1.8rem;
     div {
       display: flex;

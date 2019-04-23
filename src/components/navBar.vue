@@ -1,11 +1,11 @@
 <template>
   <a-row class="navBar">
-    <a-col span="20" class="header_input">musicApp</a-col>
-    <a-col span="4" class="header_right">
+    <a-col span="24" class="header_input">musicApp</a-col>
+    <!-- <a-col span="4" class="header_right">
       <div @click="goSearch">
         <a-icon type="search" class="search_icon"/>
       </div>
-    </a-col>
+    </a-col> -->
   </a-row>
 </template>
 
